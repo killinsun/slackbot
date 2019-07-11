@@ -43,9 +43,10 @@ exports.config = setConfig[process.env.TARGET_ENV];
 
 5. Do test code by jest
 
-5. Push to master repo. 
-This repo doesn't have other repository now because my workspaces is not mission critical.
+5. Push to your repo. 
+
+## Deploy
 
 
-and now, This repo is not be linking by CI now,
-I'll configure some CI tools later.
+## TODO
+
