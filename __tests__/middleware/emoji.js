@@ -19,22 +19,3 @@ test('routing emoji add', async () => {
 
 
 
-/*
-describe('Check does it work Handling emoji event', () =>{
-  it('routing_emoji_add',async () => {
-      const result = await emoji.router(testparam);
-      assert.equal(result, null);
-
-    return emoji.router(testparam)
-    .then(assert.equal(null, null))
-  });
-
-  it('routing_emoji_other', async () => {
-      testparam.subtype = 'none';
-      const result = await emoji.router(testparam);
-      assert.equal(result,'Could not handlle this request.'); 
-      assert.throws
-  });
-
-});
-*/

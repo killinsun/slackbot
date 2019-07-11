@@ -23,6 +23,8 @@ async function add(evt){
   console.log(token);
   const text   = 'Emoji added. -> :' + evt.name + ': (' + evt.name +')';
    await post.post(token, channel, text);
+
+  //This is bad approach. I'll fix later.
   return null
 }
 
