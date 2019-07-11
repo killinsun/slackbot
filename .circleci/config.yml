@@ -21,8 +21,13 @@ jobs:
           fingerprints:
               - "23:00:a5:97:cc:e9:9e:5f:03:09:e9:ab:bc:57:08:2c"
 
-      # Deploy
       - run:
+            name: Start ssh-keyscan
+            command: |
+              ssh-keyscan blog.killinsun.com >> ~/.ssh/known_hosts
+
+      # Deploy
+      - deploy:
             name: Deploy over SSH
             command: |
-              ssh circleci@blog.killinsun.com -p 22 "cd /usr/local/share/docker-compose/teclub-slackbot/src/; git pull origin master; cd ../; docker-compose restart"
+              ssh circleci@blog.killinsun.com "cd /usr/local/share/docker-compose/teclub-slackbot/src/; git pull origin master; cd ../; docker-compose restart"
