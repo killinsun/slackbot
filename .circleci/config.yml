@@ -21,23 +21,12 @@ jobs:
           fingerprints:
               - "23:00:a5:97:cc:e9:9e:5f:03:09:e9:ab:bc:57:08:2c"
 
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
       - run: npm install
 
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: npm install -g jest
 
       # run tests!
-      - run: jest test
+      - run: jest
 
       # Deploy
       - run:
