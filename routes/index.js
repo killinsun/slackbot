@@ -20,20 +20,19 @@ router.post('/', async (req, res, next) => {
 
 //Emoji ========================
 router.post('/', async (req, res, next) => {
-  if(req.body.event.type == 'emoji_changed'){
-     await emoji.router(req.body.event);
-  }else{
-    next();
-  }
+  if(req.body.event.type != 'emoji_changed' ) next();
+  await emoji.router(req.body.event);
 });
 
 //Channel =====================
 router.post('/', async (req, res, next) => {
-  if(req.body.event.type == 'channel_created'){
-     await channel.add(req.body.event);
-  }else{
-    next();
-  }
+  if(req.body.event.type != 'channel_created') next();
+  await channel.add(req.body.event);
 });
+
+//Emoji-ranking ================
+router.get('/rank', async(req, res, next) => {
+  channels = channel.get(token);
+})
 
 module.exports = router;

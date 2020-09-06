@@ -11,10 +11,10 @@ exports = module.exports.add    = add;
 async function router(evt){
 
   if(evt.subtype == 'add'){
-       await add(evt);
-      return 'call successfull'
+    await add(evt);
+    return 'call successfull'
   }else{
-      throw new Error('Could not handlle this request. : ' + evt.subtype);
+    throw new Error('Could not handlle this request. : ' + evt.subtype);
   }
 
 }
@@ -22,7 +22,7 @@ async function router(evt){
 async function add(evt){
   console.log(token);
   const text   = 'Emoji added. -> :' + evt.name + ': (' + evt.name +')';
-   await post.post(token, channel, text);
+  await post.post(token, channel, text);
 
   //This is bad approach. I'll fix later.
   return null
