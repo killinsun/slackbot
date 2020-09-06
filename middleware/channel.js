@@ -8,6 +8,7 @@ const channel = config.config.channel;
 const { App } = require('@slack/bolt');
 
 exports = module.exports.add = add;
+exports = module.exports.get = get;
 
 async function add(evt) {
   const text   = 'New channel created -> : #' + 

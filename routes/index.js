@@ -32,7 +32,7 @@ router.post('/', async (req, res, next) => {
 
 //Emoji-ranking ================
 router.get('/rank', async(req, res, next) => {
-  channels = channel.get(token);
+  channels = await channel.get(token);
 })
 
 module.exports = router;
