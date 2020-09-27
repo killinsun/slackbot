@@ -3,6 +3,8 @@ const router  = express.Router();
 const emoji   = require('../middleware/emoji.js');
 const post    = require('../middleware/post.js');
 const channel = require('../middleware/channel.js');
+const conversations = require('../middleware/conversations.js');
+const { channels } = require('slack');
 
 const token   = process.env.SLACK_BOT_TOKEN;
 
@@ -32,7 +34,18 @@ router.post('/', async (req, res, next) => {
 
 //Emoji-ranking ================
 router.get('/rank', async(req, res, next) => {
-  channels = await channel.get(token);
+  const channels = await channel.get(token);
+  console.log(channels)
+
+  const oldest = new Date(2020, 9, 7, 0, 0, 0)
+  const latest= new Date(2020,09,07,23,59,59)
+  const history = await conversations.fetchConversationLog("CL75M09FS", latest.getTime(), oldest.getTime());
+  /*
+  for(let channel of channels.channels){
+    conversations.fetchConversationLog(channel.id)
+  }
+  */
+  res.send(history.messages);
 })
 
 module.exports = router;

@@ -1,11 +1,11 @@
 'use strict';
 const post    = require('./post.js');
 const config  = require('../config.js');
+const Slack = require('slack');
+const slack = Slack();
 
 const token   = config.config.slack_token;
 const channel = config.config.channel;
-
-const { App } = require('@slack/bolt');
 
 exports = module.exports.add = add;
 exports = module.exports.get = get;
@@ -20,9 +20,9 @@ async function add(evt) {
   return 
 }
 
-async function get(token) {
+async function get() {
   try {
-    const result = await app.client.conversations.list({
+    return await slack.conversations.list({
       token: token
     })
   }catch(e){
