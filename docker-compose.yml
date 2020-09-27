@@ -1,0 +1,19 @@
+version: '3'
+services:
+  webserver:
+    image: node:10.16
+    container_name: teclub-slackbot
+    hostname: teclub-slackbot.killinsun.com
+    ports:
+        - 3033:80
+    tty: true
+    volumes:
+      - ./src:/src
+    command: bash -c "cd /src && npm install && npm update && npm start"
+
+    #volumes:
+    #src:
+    #driver_opts:
+    #type: none
+    #  device: ./src
+    #  o: bind
