@@ -9,7 +9,7 @@ services:
     tty: true
     volumes:
       - ./src:/src
-    command: bash -c "cd /src && npm install && npm update && npm start"
+    command: bash -c "cd /src && npm install && npm update && npm run local"
 
     #volumes:
     #src:
