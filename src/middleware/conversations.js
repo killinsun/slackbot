@@ -17,6 +17,9 @@ const app = new App({
 })
 
 
+/* 
+  Event API
+*/
 async function onCreated(evt) {
   const text   = 'New channel created -> : #' + 
     evt.channel.name + 
@@ -28,12 +31,32 @@ async function onCreated(evt) {
 
 }
 
+/*
+  Web API
+*/
+
 async function fetchConversations() {
   try {
-    const result = await app.client.conversations.list({
-      token: slack_bot_token
+
+    let result = await app.client.conversations.list({
+      token: slack_bot_token,
+      limit: 1000,
     })
-    return result
+
+    let final_result = []
+    final_result = final_result.concat(result.channels)
+
+    while(result.response_metadata.next_cursor != "") {
+      result = await app.client.conversations.list({
+        token: slack_bot_token,
+        limit: 200,
+        cursor: result.response_metadata.next_cursor
+      })
+      console.log(result.channels)
+      final_result = final_result.concat(result.channels)
+    }
+    return final_result
+
   }catch(e){
     console.error(e)
     console.error(e.data.response_metadata)
@@ -41,15 +64,36 @@ async function fetchConversations() {
 
 }
 
-async function fetchConversationLog(channelId, latest, oldest) {
+async function fetchConversationLog(channelId, oldest, latest) {
   try {
-    const result = await app.client.conversations.history({
+
+    let result = await app.client.conversations.history({
       token: user_token,
       channel: channelId,
-      oldest: '1598886000'	
+      oldest: oldest,
+      limit: 1000,
     })
-    console.log(result)
+
+    let final_result = []
+    let count = 0
+    while(result.response_metadata.next_cursor != "") {
+      if(count > 3) break;
+      result = result = await app.client.conversations.history({
+        token: user_token,
+        channel: channelId,
+        oldest: oldest,
+        limit: 200,
+        cursor: result.response_metadata.next_cursor
+      })
+      final_result = final_result.concat(result.messages)
+    }
     return result
+    /*
+    for(let message of result.messages){
+      console.log(message.reactions)
+    }
+    return result
+    */
   }catch(e){
     console.error(e)
   }

@@ -5,8 +5,6 @@ const config  = require('../config.js');
 const token   = config.config.slack_token;
 const channel = config.config.channel;
 
-exports = module.exports.router = router;
-exports = module.exports.add    = add;
 
 async function router(evt){
 
@@ -28,3 +26,5 @@ async function add(evt){
   return null
 }
 
+exports = module.exports.router = router;
+exports = module.exports.add    = add;

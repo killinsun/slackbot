@@ -1,8 +1,9 @@
 const express = require('express');
 const router  = express.Router();
-const emoji   = require('../middleware/emoji.js');
-const post    = require('../middleware/post.js');
-const conversations = require('../middleware/conversations.js');
+const Post    = require('../middleware/post.js');
+const Emoji   = require('../middleware/emoji.js');
+const Conversations = require('../middleware/conversations.js');
+const ReactionRanking= require('../middleware/reactionRanking.js');
 const { channels } = require('slack');
 
 const token   = process.env.SLACK_BOT_TOKEN;
@@ -22,22 +23,27 @@ router.post('/', async (req, res, next) => {
 //Emoji ========================
 router.post('/', async (req, res, next) => {
   if(req.body.event.type != 'emoji_changed' ) next();
-  await emoji.router(req.body.event);
+  await Emoji.router(req.body.event);
 });
 
 //Conversations(Channel) =====================
 router.post('/', async (req, res, next) => {
   if(req.body.event.type != 'channel_created') next();
-  await conversations.onCreated(req.body.event);
+  await Conversations.onCreated(req.body.event);
 });
 
-//Emoji-ranking ================
-router.get('/rank', async(req, res, next) => {
-  const channels = await conversations.fetchConversations(token);
-  for(let channel of channels.channels){
-    console.log(channel.id)
-    conversations.fetchConversationLog(channel.id,null,null)
-  }
+//Emoji(reaction)-ranking ================
+router.get('/reaction_rank', async(req, res, next) => {
+  const allReactionsMap = await ReactionRanking.makeReactionRanking('1598911332', null)
+  await ReactionRanking.makePostMessage(allReactionsMap)
+  res.json(allReactionsMap)
+})
+
+//AllConversations
+router.get('/all_conversations', async(req, res, next) => {
+  const allConversations = await Conversations.fetchConversations()
+  console.log(allConversations)
+  res.json(allConversations)
 })
 
 module.exports = router;
