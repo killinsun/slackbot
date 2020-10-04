@@ -76,8 +76,11 @@ async function fetchConversationLog(channelId, oldest, latest) {
 
     let final_result = []
     let count = 0
-    while(result.response_metadata.next_cursor != "") {
-      if(count > 3) break;
+    final_result = final_result.concat(result.messages)
+
+    console.log("next_cursor " + result.response_metadata.next_cursor)
+    while(result.response_metadata.next_cursor != undefined) {
+      if(count > 2) break;
       result = result = await app.client.conversations.history({
         token: user_token,
         channel: channelId,
@@ -86,8 +89,9 @@ async function fetchConversationLog(channelId, oldest, latest) {
         cursor: result.response_metadata.next_cursor
       })
       final_result = final_result.concat(result.messages)
+      count += 1
     }
-    return result
+    return final_result
     /*
     for(let message of result.messages){
       console.log(message.reactions)

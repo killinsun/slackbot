@@ -8,6 +8,7 @@ const { channels } = require('slack');
 
 const token   = process.env.SLACK_BOT_TOKEN;
 
+
 /* GET home page. */
 router.get('/', (req, res, next) => {
   res.render('index', { title: 'Express' });
@@ -31,19 +32,5 @@ router.post('/', async (req, res, next) => {
   if(req.body.event.type != 'channel_created') next();
   await Conversations.onCreated(req.body.event);
 });
-
-//Emoji(reaction)-ranking ================
-router.get('/reaction_rank', async(req, res, next) => {
-  const allReactionsMap = await ReactionRanking.makeReactionRanking('1598911332', null)
-  await ReactionRanking.makePostMessage(allReactionsMap)
-  res.json(allReactionsMap)
-})
-
-//AllConversations
-router.get('/all_conversations', async(req, res, next) => {
-  const allConversations = await Conversations.fetchConversations()
-  console.log(allConversations)
-  res.json(allConversations)
-})
 
 module.exports = router;
